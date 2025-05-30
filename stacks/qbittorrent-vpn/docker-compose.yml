@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  qbittorrent-vpn:
+    image: dyonr/qbittorrentvpn:4.6.7-1
+    container_name: "{{ CONTAINER_NAME }}"
+    hostname: "{{ CONTAINER_NAME }}.internal"
+    restart: unless-stopped
+    environment:
+      # VPN Configuration
+      - VPN_ENABLED=true
+      - VPN_TYPE=wireguard
+      - VPN_CONF=wg0
+      - VPN_PROVIDER=generic
+      - LAN_NETWORK="{{ LAN_NETWORK }}"
+      - VPN_LAN_LEAK_ENABLED=false
+      - VPN_AUTO_PORT_FORWARD=false
+      - VPN_FIREWALL_TYPE=auto
+      - VPN_HEALTHCHECK_ENABLED=true
+      
+      # qBittorrent Configuration
+      - WEBUI_PORT=8080
+      - PUID={{ PUID }}
+      - PGID={{ PGID }}
+      - TZ={{ TIMEZONE }}
+      
+      # Optional Proxy Settings
+      - PRIVOXY_ENABLED=false
+      - UNBOUND_ENABLED=false
+      
+      # WireGuard Configuration
+      - WIREGUARD_PRIVATE_KEY={{ WG_PRIVATE_KEY }}
+      - WIREGUARD_ADDRESSES=100.95.137.132/32
+      - WIREGUARD_DNS=10.255.255.3
+      - WIREGUARD_PUBLIC_KEY=5LYbbr320XMoXPrLsZex+2cDAMUOnzX5Htpcgb4Uc1c=
+      - WIREGUARD_ALLOWED_IPS=0.0.0.0/0,::/0
+      - WIREGUARD_ENDPOINT=ord-323-wg.whiskergalaxy.com:443
+      - WIREGUARD_PRESHARED_KEY={{ WG_PRESHARED_KEY }}
+      
+    cap_add:
+      - NET_ADMIN
+    
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=1
+    
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    
+    ports:
+      - "{{ WEBUI_PORT }}:8080"
+    
+    volumes:
+      - "{{ CONFIG_PATH }}:/config"
+      - "torrent:/downloads"
+      - "{{ WATCH_FOLDER }}:/watch"
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"\]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  torrent:
+    external: true

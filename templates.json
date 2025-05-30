@@ -1,0 +1,95 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 3,
+      "title": "qBittorrent VPN",
+      "description": "A powerful and feature-rich BitTorrent client with integrated VPN support using WireGuard for secure and private torrenting.",
+      "note": "Requires WireGuard VPN configuration. The torrent volume must exist before deployment. Default credentials: admin/adminadmin (change immediately after first login).",
+      "categories": ["Media", "VPN", "Torrents"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/GodSpoon/portainer-templates/master/icons/qbittorrent.svg",
+      "repository": {
+        "url": "https://github.com/GodSpoon/portainer-templates",
+        "stackfile": "stacks/qbittorrent-vpn/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "CONTAINER_NAME",
+          "label": "Container Name",
+          "description": "Name for the qBittorrent container",
+          "default": "qbittorrent-vpn"
+        },
+        {
+          "name": "WEBUI_PORT",
+          "label": "Web UI Port",
+          "description": "Port for accessing qBittorrent web interface",
+          "default": "8080"
+        },
+        {
+          "name": "PUID",
+          "label": "User ID (PUID)",
+          "description": "User ID for file permissions (run 'id' command to find yours)",
+          "default": "1000"
+        },
+        {
+          "name": "PGID",
+          "label": "Group ID (PGID)",
+          "description": "Group ID for file permissions (run 'id' command to find yours)",
+          "default": "1000"
+        },
+        {
+          "name": "TIMEZONE",
+          "label": "Timezone",
+          "description": "Container timezone (e.g., America/New_York, Europe/London)",
+          "default": "UTC"
+        },
+        {
+          "name": "LAN_NETWORK",
+          "label": "LAN Network",
+          "description": "Your local network range (e.g., 192.168.1.0/24)",
+          "default": "192.168.1.0/24"
+        },
+        {
+          "name": "CONFIG_PATH",
+          "label": "Configuration Path",
+          "description": "Host path for qBittorrent configuration files",
+          "default": "/opt/qbittorrent/config"
+        },
+        {
+          "name": "WATCH_FOLDER",
+          "label": "Watch Folder Path",
+          "description": "Host path for torrent watch folder",
+          "default": "/opt/qbittorrent/watch"
+        },
+        {
+          "name": "WG_PRIVATE_KEY",
+          "label": "WireGuard Private Key",
+          "description": "Your WireGuard private key (keep this secure!)"
+        },
+        {
+          "name": "WG_PRESHARED_KEY",
+          "label": "WireGuard Preshared Key",
+          "description": "Your WireGuard preshared key (optional but recommended for security)"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/config",
+          "bind": "{{ CONFIG_PATH }}"
+        },
+        {
+          "container": "/downloads",
+          "bind": "torrent"
+        },
+        {
+          "container": "/watch",
+          "bind": "{{ WATCH_FOLDER }}"
+        }
+      ],
+      "ports": [
+        "{{ WEBUI_PORT }}:8080/tcp"
+      ]
+    }
+  ]
+}
