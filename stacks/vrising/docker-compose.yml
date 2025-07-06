@@ -1,0 +1,28 @@
+services:
+  vrising:
+    image: trueosiris/vrising:latest
+    container_name: vrising-server
+    environment:
+      - TZ=${TZ:-UTC}
+      - SERVERNAME=${SERVERNAME:-My V Rising Server}
+      - WORLDNAME=${WORLDNAME:-world1}
+      - GAMEPORT=${GAMEPORT:-}
+      - QUERYPORT=${QUERYPORT:-}
+      - LOGDAYS=${LOGDAYS:-30}
+      - BRANCH=${BRANCH:-}
+    volumes:
+      - type: bind
+        source: ${SERVER_PATH:-./vrising/server}
+        target: /mnt/vrising/server
+        bind:
+          create_host_path: true
+      - type: bind
+        source: ${DATA_PATH:-./vrising/data}
+        target: /mnt/vrising/persistentdata
+        bind:
+          create_host_path: true
+    ports:
+      - '${GAME_PORT:-9876}:9876/udp'
+      - '${QUERY_PORT:-9877}:9877/udp'
+    restart: unless-stopped
+    network_mode: bridge
