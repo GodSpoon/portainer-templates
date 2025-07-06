@@ -3,9 +3,9 @@ services:
     image: trueosiris/vrising:latest
     container_name: vrising-server
     environment:
-      - TZ=${TZ:-UTC}
-      - SERVERNAME=${SERVERNAME:-My V Rising Server}
-      - WORLDNAME=${WORLDNAME:-world1}
+      - TZ=${TZ:-EST}
+      - SERVERNAME=${SERVERNAME:-Virginity Rising}
+      - WORLDNAME=${WORLDNAME:-virginity_rising}
       - GAMEPORT=${GAMEPORT:-}
       - QUERYPORT=${QUERYPORT:-}
       - LOGDAYS=${LOGDAYS:-30}
