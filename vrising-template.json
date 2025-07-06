@@ -1,0 +1,95 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 1,
+      "title": "V Rising Dedicated Server",
+      "description": "V Rising dedicated server in Ubuntu 22.04 container with Wine. Supports multiplayer gaming with configurable server settings.",
+      "categories": ["Gaming"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/TrueOsiris/docker-vrising/main/assets/docker-virising.png",
+      "image": "trueosiris/vrising:latest",
+      "name": "vrising-server",
+      "restart_policy": "unless-stopped",
+      "network_mode": "bridge",
+      "ports": [
+        {
+          "label": "Game Port",
+          "description": "Main game port (UDP)",
+          "default": "9876/udp"
+        },
+        {
+          "label": "Query Port", 
+          "description": "Server query port (UDP)",
+          "default": "9877/udp"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/mnt/vrising/server",
+          "bind": "/opt/vrising/server",
+          "readonly": false,
+          "type": "bind"
+        },
+        {
+          "container": "/mnt/vrising/persistentdata",
+          "bind": "/opt/vrising/data",
+          "readonly": false,
+          "type": "bind"
+        }
+      ],
+      "env": [
+        {
+          "name": "TZ",
+          "label": "Timezone",
+          "description": "Server timezone (e.g., Europe/Paris, America/New_York)",
+          "default": "UTC",
+          "preset": false
+        },
+        {
+          "name": "SERVERNAME",
+          "label": "Server Name",
+          "description": "Published server name (mandatory)",
+          "default": "My V Rising Server",
+          "preset": false
+        },
+        {
+          "name": "WORLDNAME",
+          "label": "World Name",
+          "description": "Optional world name (default: world1)",
+          "default": "world1",
+          "preset": false
+        },
+        {
+          "name": "GAMEPORT",
+          "label": "Custom Game Port",
+          "description": "Override default game port (optional)",
+          "default": "",
+          "preset": false
+        },
+        {
+          "name": "QUERYPORT",
+          "label": "Custom Query Port", 
+          "description": "Override default query port (optional)",
+          "default": "",
+          "preset": false
+        },
+        {
+          "name": "LOGDAYS",
+          "label": "Log Retention Days",
+          "description": "Days to keep log files (default: 30)",
+          "default": "30",
+          "preset": false
+        },
+        {
+          "name": "BRANCH",
+          "label": "Server Branch",
+          "description": "Server version branch (e.g., legacy-1.0.x-pc)",
+          "default": "",
+          "preset": false
+        }
+      ],
+      "note": "<h4>V Rising Dedicated Server</h4><p>This template deploys a V Rising dedicated server using Wine in Ubuntu 22.04.</p><h5>Important Notes:</h5><ul><li><strong>Server Name:</strong> This is mandatory and will appear in the server browser</li><li><strong>Port Configuration:</strong> Default ports are 9876 (game) and 9877 (query). If you change these, update both the environment variables AND the port mappings</li><li><strong>First Launch:</strong> Server startup can take up to 10 minutes, especially with existing saves</li><li><strong>Configuration:</strong> Server config files are stored in <code>/opt/vrising/data/Settings/</code> on the host</li><li><strong>Password Protection:</strong> Edit <code>ServerHostSettings.json</code> to add a password</li><li><strong>RCON:</strong> Can be enabled by editing <code>ServerHostSettings.json</code></li></ul><h5>Volume Paths:</h5><ul><li><strong>Server Files:</strong> <code>/opt/vrising/server</code> - Game server installation</li><li><strong>Persistent Data:</strong> <code>/opt/vrising/data</code> - World saves and configuration</li></ul><h5>Post-Deploy:</h5><ol><li>Wait for initial download and setup to complete</li><li>Edit configuration files in <code>/opt/vrising/data/Settings/</code> if needed</li><li>Restart container if configuration changes are made</li><li>Forward UDP ports 9876 and 9877 in your firewall/router</li></ol><p>For more information, visit the <a href='https://github.com/TrueOsiris/docker-vrising' target='_blank'>project repository</a>.</p>"
+    }
+  ]
+}
