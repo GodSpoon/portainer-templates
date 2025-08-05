@@ -265,6 +265,72 @@
       ],
       "restart_policy": "unless-stopped",
       "note": "⚠️ IMPORTANT SETUP NOTES:\n\n🔐 **WireGuard Setup**: After first run, place your WireGuard config file in the config/wireguard/ directory as 'wg0.conf'\n\n📋 **Default Credentials**:\n- qBittorrent: admin / (check config/supervisord.log for generated password)\n- SOCKS Proxy: admin / socks\n\n🌐 **Access URLs**:\n- qBittorrent WebUI: http://YOUR_SERVER_IP:8080\n- Privoxy: http://YOUR_SERVER_IP:8118  \n- SOCKS5 Proxy: YOUR_SERVER_IP:9118\n\n🔧 **Post-Installation**:\n1. Copy your WireGuard config to: [config-path]/wireguard/wg0.conf\n2. Restart the container\n3. Check logs to verify VPN connection\n4. Update qBittorrent password in WebUI\n\n⚠️ **Security**: This container runs in privileged mode for WireGuard support. Ensure proper network isolation."
+    },
+    {
+      "type": 3,
+      "title": "JunimoServer - Stardew Valley",
+      "name": "junimoserver",
+      "description": "24/7 Stardew Valley dedicated server with web-based VNC administration, automatic backups, and SMAPI mod support. Supports up to 150 players with persistent saves and crop protection.",
+      "categories": [
+        "Gaming"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/stardew-valley-dedicated-server/server/master/docker/rootfs/data/images/junimo.png",
+      "repository": {
+        "url": "https://github.com/GodSpoon/portainer-templates",
+        "stackfile": "stacks/junimoserver/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "GAME_PORT",
+          "label": "Game Port",
+          "description": "UDP port for Stardew Valley game connections",
+          "default": "24643"
+        },
+        {
+          "name": "VNC_PORT",
+          "label": "VNC Port",
+          "description": "Port for web-based VNC administration interface",
+          "default": "8090"
+        },
+        {
+          "name": "VNC_PASSWORD",
+          "label": "VNC Password",
+          "description": "Password for VNC web interface access (required for administration)"
+        },
+        {
+          "name": "STEAM_USER",
+          "label": "Steam Username",
+          "description": "Steam account username (required for initial game download)"
+        },
+        {
+          "name": "STEAM_PASS",
+          "label": "Steam Password",
+          "description": "Steam account password (required for initial game download)"
+        },
+        {
+          "name": "STEAM_GUARD_CODE",
+          "label": "Steam Guard Code",
+          "description": "Steam Guard authentication code (leave empty if not using Steam Guard)"
+        },
+        {
+          "name": "DISABLE_RENDERING",
+          "label": "Disable Rendering",
+          "description": "Disable game rendering for better performance on headless servers",
+          "default": "true",
+          "select": [
+            {
+              "text": "Yes (Recommended for headless servers)",
+              "value": "true",
+              "default": true
+            },
+            {
+              "text": "No (Enable if you need visual output)",
+              "value": "false"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,37 @@
+services:
+  stardew:
+    image: sdvd/server:latest
+    container_name: sdvd-server
+    restart: unless-stopped
+    ports:
+      - "${GAME_PORT:-24643}:24642/udp"
+      - "${VNC_PORT:-8090}:5800"
+    volumes:
+      - game_data:/data/Stardew
+      - save_data:/config/xdg/config/StardewValley
+      # Optional: Mount additional mods directory
+      # - ./mods:/data/Stardew/Mods/extra
+    environment:
+      STEAM_USER: "${STEAM_USER}"
+      STEAM_PASS: "${STEAM_PASS}"
+      STEAM_GUARD_CODE: "${STEAM_GUARD_CODE:-}"
+      VNC_PASSWORD: "${VNC_PASSWORD}"
+      DISABLE_RENDERING: "${DISABLE_RENDERING:-true}"
+    networks:
+      - stardew_network
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f 'StardewValley' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+volumes:
+  game_data:
+    driver: local
+  save_data:
+    driver: local
+
+networks:
+  stardew_network:
+    driver: bridge

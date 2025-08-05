@@ -1,0 +1,69 @@
+{
+  "version": "2",
+  "templates": [
+    {
+      "type": 3,
+      "title": "JunimoServer - Stardew Valley Dedicated Server",
+      "description": "24/7 Stardew Valley dedicated server with web-based VNC administration, automatic backups, and SMAPI mod support. Supports up to 150 players with persistent saves and crop protection.",
+      "note": "Steam credentials are required for initial game download. Server supports up to 150 players and includes VNC access for management. Access VNC at http://yourserver:VNC_PORT after deployment. Initial setup takes 5-10 minutes.",
+      "categories": ["Gaming", "Multiplayer"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/stardew-valley-dedicated-server/server/master/docker/rootfs/data/images/junimo.png",
+      "repository": {
+        "url": "https://github.com/GodSpoon/portainer-templates",
+        "stackfile": "stacks/junimoserver/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "GAME_PORT",
+          "label": "Game Port",
+          "description": "UDP port for Stardew Valley game connections",
+          "default": "24643"
+        },
+        {
+          "name": "VNC_PORT",
+          "label": "VNC Port",
+          "description": "Port for web-based VNC administration interface",
+          "default": "8090"
+        },
+        {
+          "name": "VNC_PASSWORD",
+          "label": "VNC Password",
+          "description": "Password for VNC web interface access (required for administration)"
+        },
+        {
+          "name": "STEAM_USER",
+          "label": "Steam Username",
+          "description": "Steam account username (required for initial game download)"
+        },
+        {
+          "name": "STEAM_PASS",
+          "label": "Steam Password",
+          "description": "Steam account password (required for initial game download)"
+        },
+        {
+          "name": "STEAM_GUARD_CODE",
+          "label": "Steam Guard Code",
+          "description": "Steam Guard authentication code (leave empty if not using Steam Guard)"
+        },
+        {
+          "name": "DISABLE_RENDERING",
+          "label": "Disable Rendering",
+          "description": "Disable game rendering for better performance on headless servers",
+          "default": "true",
+          "select": [
+            {
+              "text": "Yes (Recommended for headless servers)",
+              "value": "true",
+              "default": true
+            },
+            {
+              "text": "No (Enable if you need visual output)",
+              "value": "false"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
